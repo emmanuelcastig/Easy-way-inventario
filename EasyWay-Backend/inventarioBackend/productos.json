@@ -1,1 +1,13 @@
-[ ]
+[ {
+  "id" : 1,
+  "nombre" : "Mesa",
+  "seccion" : "Inmuebles",
+  "precioCompra" : 20000,
+  "precioVenta" : 30000
+}, {
+  "id" : 2,
+  "nombre" : "Televisor ",
+  "seccion" : "Electrodomésticos",
+  "precioCompra" : 1250000,
+  "precioVenta" : 1400000
+} ]

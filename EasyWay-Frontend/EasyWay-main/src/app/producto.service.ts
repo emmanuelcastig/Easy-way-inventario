@@ -12,23 +12,24 @@ export interface Producto {
 
 @Injectable({ providedIn: 'root' })
 export class ProductoService {
-  private apiUrl = 'http://localhost:8080/api/productos';
+  private apiUrl = 'http://localhost:8080/api/v1/inventario';
 
   constructor(private http: HttpClient) {}
 
   obtenerProductos(): Observable<Producto[]> {
-    return this.http.get<Producto[]>(this.apiUrl);
+    return this.http.get<Producto[]>(`${this.apiUrl}/productos`);
   }
 
   obtenerProductoPorId(id: number): Observable<Producto> {
-    return this.http.get<Producto>(`${this.apiUrl}/${id}`);
+    return this.http.get<Producto>(`${this.apiUrl}/producto/${id}`);
   }
 
-  crearProducto(producto: Omit<Producto, 'id'>): Observable<Producto> {
-    return this.http.post<Producto>(this.apiUrl, producto);
+  crearProducto(producto: Omit<Producto, 'id'>): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/producto`, producto);
   }
+
 
   eliminarProducto(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/producto/${id}`);
   }
 }
