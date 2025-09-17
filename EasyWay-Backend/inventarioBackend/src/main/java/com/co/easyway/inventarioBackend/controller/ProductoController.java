@@ -29,7 +29,6 @@ public class ProductoController {
     private final IProductoService productoService;
     private final ProductoMapper productoMapper;
 
-    //@PatchMapping
 
     @PostMapping("/producto")
     public ResponseEntity<Void> crearProducto(@Valid @RequestBody ProductoRequest productoRequest) {
