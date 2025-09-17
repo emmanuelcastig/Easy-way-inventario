@@ -1,0 +1,117 @@
+<div class="container">
+  <header class="header">
+    <h1>Easy Way Inventarios</h1>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Agregar Producto</h2>
+      <form (ngSubmit)="agregarProducto()" #productoForm="ngForm" class="form-grid">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="nuevoProducto.nombre" name="nombre" required minlength="4"
+            #nombre="ngModel" />
+        </div>
+        <div class="form-group">
+          <label>Precio Compra</label>
+          <input type="number" [(ngModel)]="nuevoProducto.precioCompra" name="precioCompra" required />
+        </div>
+        <div class="form-group">
+          <label>Precio Venta</label>
+          <input type="number" [(ngModel)]="nuevoProducto.precioVenta" name="precioVenta" required />
+        </div>
+        <div class="form-group">
+          <label>Sección</label>
+          <input type="text" [(ngModel)]="nuevoProducto.seccion" name="lugar" required minlength="4"
+            #seccion="ngModel" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success" [disabled]="!productoForm.form.valid">
+            Agregar
+          </button>
+        </div>
+      </form>
+      <div class="alerta" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+        <div *ngIf="nombre.errors?.['required']">
+          El nombre del producto es obligatorio.
+        </div>
+        <div>
+          <div class="alerta" *ngIf="nombre.errors?.['minlength']">
+            Nombre del producto es demasiado corto, mínimo 4 caracteres.
+          </div>
+        </div>
+      </div>
+
+      <div class="alerta" *ngIf="seccion.invalid && (seccion.dirty || seccion.touched)">
+        <div *ngIf="seccion.errors?.['required']">
+          El nombre de la sección es obligatorio.
+        </div>
+        <div *ngIf="seccion.errors?.['minlength']">
+          Nombre de sección es demasiado corto, mínimo 4 caracteres.
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Buscar Producto por ID</h2>
+      <div class="search-bar">
+        <input type="number" [(ngModel)]="busquedaId" name="busquedaId" placeholder="Ingrese ID" />
+        <button (click)="buscarProducto()" class="btn btn-primary">
+          Buscar
+        </button>
+      </div>
+
+      <div *ngIf="productoEncontrado as p" class="result">
+        <h3>Resultado</h3>
+        <ul>
+          <li><strong>ID:</strong> {{ p.id }}</li>
+          <li><strong>Nombre:</strong> {{ p.nombre }}</li>
+          <li>
+            <strong>Precio Compra:</strong> {{ p.precioCompra | currency }}
+          </li>
+          <li><strong>Precio Venta:</strong> {{ p.precioVenta | currency }}</li>
+          <li><strong>Sección:</strong> {{ p.seccion }}</li>
+        </ul>
+      </div>
+
+      <p *ngIf="busquedaRealizada && !productoEncontrado" class="not-found">
+        Producto no encontrado
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Lista de Productos</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Precio Compra</th>
+              <th>Precio Venta</th>
+              <th>Sección</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of productos">
+              <td>{{ producto.id }}</td>
+              <td>{{ producto.nombre }}</td>
+              <td>{{ producto.precioCompra | currency }}</td>
+              <td>{{ producto.precioVenta | currency }}</td>
+              <td>{{ producto.seccion }}</td>
+              <td>
+                <button class="btn btn-danger" (click)="eliminarProducto(producto.id)">
+                  🗑 Eliminar
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="productos.length === 0">
+              <td colspan="6" class="empty">No hay productos registrados</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
