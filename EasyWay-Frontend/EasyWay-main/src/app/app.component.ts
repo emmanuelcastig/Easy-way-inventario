@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductoService, Producto } from './producto.service';
 
@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   busquedaId: number | null = null;
   productoEncontrado: Producto | null = null;
   busquedaRealizada = false;
+  mensajeExito: string | null = null;
 
   constructor(private productoService: ProductoService) {}
 
@@ -35,16 +36,24 @@ export class AppComponent implements OnInit {
     });
   }
 
-  agregarProducto() {
-    this.productoService.crearProducto(this.nuevoProducto).subscribe(() => {
-      this.nuevoProducto = {
-        nombre: '',
-        precioCompra: 0,
-        precioVenta: 0,
-        seccion: '',
-      };
-      this.cargarProductos();
-    });
+  agregarProducto(form: NgForm) {
+    if (form.valid) {
+      this.productoService.crearProducto(this.nuevoProducto).subscribe(() => {
+        this.nuevoProducto = {
+          nombre: '',
+          precioCompra: 0,
+          precioVenta: 0,
+          seccion: '',
+        };
+
+        this.mensajeExito = ' Producto creado con éxito';
+        setTimeout(() => (this.mensajeExito = null), 2000);
+
+        form.resetForm();
+
+        this.cargarProductos();
+      });
+    }
   }
 
   buscarProducto() {
