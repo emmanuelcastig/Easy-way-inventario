@@ -6,7 +6,8 @@
   <main>
     <section class="card">
       <h2>Agregar Producto</h2>
-      <form (ngSubmit)="agregarProducto()" #productoForm="ngForm" class="form-grid">
+
+      <form (ngSubmit)="agregarProducto(productoForm)" #productoForm="ngForm" class="form-grid">
         <div class="form-group">
           <label>Nombre</label>
           <input type="text" [(ngModel)]="nuevoProducto.nombre" name="nombre" required minlength="4"
@@ -22,7 +23,7 @@
         </div>
         <div class="form-group">
           <label>Sección</label>
-          <input type="text" [(ngModel)]="nuevoProducto.seccion" name="lugar" required minlength="4"
+          <input type="text" [(ngModel)]="nuevoProducto.seccion" name="seccion" required minlength="4"
             #seccion="ngModel" />
         </div>
         <div class="form-actions">
@@ -32,23 +33,16 @@
         </div>
       </form>
       <div class="alerta" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
-        <div *ngIf="nombre.errors?.['required']">
-          El nombre del producto es obligatorio.
-        </div>
-        <div>
-          <div class="alerta" *ngIf="nombre.errors?.['minlength']">
-            Nombre del producto es demasiado corto, mínimo 4 caracteres.
-          </div>
-        </div>
+        <div *ngIf="nombre.errors?.['required']">El nombre del producto es obligatorio.</div>
+        <div *ngIf="nombre.errors?.['minlength']">Nombre del producto es demasiado corto, mínimo 4 caracteres.</div>
+      </div>
+      <div class="alerta-success mt-3" *ngIf="mensajeExito">
+        {{ mensajeExito }}
       </div>
 
       <div class="alerta" *ngIf="seccion.invalid && (seccion.dirty || seccion.touched)">
-        <div *ngIf="seccion.errors?.['required']">
-          El nombre de la sección es obligatorio.
-        </div>
-        <div *ngIf="seccion.errors?.['minlength']">
-          Nombre de sección es demasiado corto, mínimo 4 caracteres.
-        </div>
+        <div *ngIf="seccion.errors?.['required']">El nombre de la sección es obligatorio.</div>
+        <div *ngIf="seccion.errors?.['minlength']">Nombre de sección es demasiado corto, mínimo 4 caracteres.</div>
       </div>
     </section>
 
@@ -56,9 +50,7 @@
       <h2>Buscar Producto por ID</h2>
       <div class="search-bar">
         <input type="number" [(ngModel)]="busquedaId" name="busquedaId" placeholder="Ingrese ID" />
-        <button (click)="buscarProducto()" class="btn btn-primary">
-          Buscar
-        </button>
+        <button (click)="buscarProducto()" class="btn btn-primary">Buscar</button>
       </div>
 
       <div *ngIf="productoEncontrado as p" class="result">
@@ -66,17 +58,13 @@
         <ul>
           <li><strong>ID:</strong> {{ p.id }}</li>
           <li><strong>Nombre:</strong> {{ p.nombre }}</li>
-          <li>
-            <strong>Precio Compra:</strong> {{ p.precioCompra | currency }}
-          </li>
+          <li><strong>Precio Compra:</strong> {{ p.precioCompra | currency }}</li>
           <li><strong>Precio Venta:</strong> {{ p.precioVenta | currency }}</li>
           <li><strong>Sección:</strong> {{ p.seccion }}</li>
         </ul>
       </div>
 
-      <p *ngIf="busquedaRealizada && !productoEncontrado" class="not-found">
-        Producto no encontrado
-      </p>
+      <p *ngIf="busquedaRealizada && !productoEncontrado" class="not-found">Producto no encontrado</p>
     </section>
 
     <section class="card">
