@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.text.Normalizer;
 import java.util.*;
 
 @Repository
@@ -55,6 +56,25 @@ public class ProductoRepository implements IProductoRepository {
         } else {
             throw new RuntimeException("Producto con id " + id + " no existe");
         }
+    }
+
+    @Override
+    public Optional<Producto> obtenerPorNombre(String nombre) {
+        return productos.values().stream()
+                .filter(p -> normalizarTexto(p.getNombre()).equals(normalizarTexto(nombre)))
+                .findFirst();
+    }
+
+    @Override
+    public List<Producto> obtenerPorSeccion(String seccion) {
+        return productos.values().stream()
+                .filter(p -> normalizarTexto(p.getSeccion()).equals(normalizarTexto(seccion)))
+                .toList();
+    }
+
+    private String normalizarTexto(String texto) {
+        return Normalizer.normalize(texto.toLowerCase(), Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}", "");
     }
 
     private void guardarEnArchivo() {

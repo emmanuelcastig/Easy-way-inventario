@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.co.easyway.inventarioBackend.controller.dto.ProductoRequest;
@@ -50,6 +51,25 @@ public class ProductoController {
     public ResponseEntity<Producto> eliminarProducto(@PathVariable(name = "idProducto") Long idProducto) {
         productoService.eliminarProducto(idProducto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/producto/nombre")
+    public ResponseEntity<Producto> buscarPorNombre(@RequestParam String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        return productoService.obtenerPorNombre(nombre)
+                .map(producto -> ResponseEntity.ok(producto))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/producto/seccion")
+    public ResponseEntity<List<Producto>> buscarPorSeccion(@RequestParam String seccion) {
+        if (seccion == null || seccion.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        List<Producto> productos = productoService.obtenerPorSeccion(seccion);
+        return productos.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(productos);
     }
 
 }
