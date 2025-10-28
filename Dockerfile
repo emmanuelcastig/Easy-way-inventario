@@ -16,7 +16,7 @@ RUN mkdir -p src/main/resources/static
 
 # Copia los contenidos del build del frontend dentro de static
 # Si tu build genera dist/<app-name>, usa /app/frontend/dist/<app-name>/* en vez de dist/*
-COPY --from=build-frontend /app/frontend/dist/* src/main/resources/static/
+COPY --from=build-frontend /app/frontend/dist/easy-way-front/* src/main/resources/static/
 
 # ---------- Etapa 3: Compilar backend ----------
 FROM maven:3.9.4-eclipse-temurin-17 AS build-backend
