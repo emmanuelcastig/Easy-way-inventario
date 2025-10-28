@@ -24,10 +24,21 @@ export class ProductoService {
     return this.http.get<Producto>(`${this.apiUrl}/producto/${id}`);
   }
 
+  obtenerProductoPorNombre(nombre: string): Observable<Producto> {
+    return this.http.get<Producto>(`${this.apiUrl}/producto/nombre`, {
+      params: { nombre },
+    });
+  }
+
+  obtenerProductoPorSeccion(seccion: string): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.apiUrl}/producto/seccion`, {
+      params: { seccion },
+    });
+  }
+
   crearProducto(producto: Omit<Producto, 'id'>): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/producto`, producto);
   }
-
 
   eliminarProducto(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/producto/${id}`);

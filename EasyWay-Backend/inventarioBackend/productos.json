@@ -10,4 +10,16 @@
   "seccion" : "Electrodomésticos",
   "precioCompra" : 1250000,
   "precioVenta" : 1400000
+}, {
+  "id" : 3,
+  "nombre" : "Licuadora",
+  "seccion" : "Electrodoméstico",
+  "precioCompra" : 15000,
+  "precioVenta" : 50000
+}, {
+  "id" : 4,
+  "nombre" : "Escritorio",
+  "seccion" : "Inmuebles",
+  "precioCompra" : 400000,
+  "precioVenta" : 520000
 } ]
