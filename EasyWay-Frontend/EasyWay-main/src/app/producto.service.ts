@@ -12,7 +12,7 @@ export interface Producto {
 
 @Injectable({ providedIn: 'root' })
 export class ProductoService {
-  private apiUrl = 'http://localhost:8080/api/v1/inventario';
+  private apiUrl = 'https://easy-way-inventario-1.onrender.com/api/v1/inventario';
 
   constructor(private http: HttpClient) {}
 
