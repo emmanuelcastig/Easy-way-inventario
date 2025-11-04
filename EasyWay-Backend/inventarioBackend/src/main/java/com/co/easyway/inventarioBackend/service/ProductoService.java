@@ -36,7 +36,7 @@ public class ProductoService implements IProductoService{
     }
 
     @Override
-    public Optional<Producto> obtenerPorNombre(String nombre) {
+    public List<Producto> obtenerPorNombre(String nombre) {
         return repository.obtenerPorNombre(nombre);
     }
 

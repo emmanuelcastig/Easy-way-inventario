@@ -15,6 +15,7 @@ public class ProductoRepository implements IProductoRepository {
 
     private final Map<Long, Producto> productos = new HashMap<>();
     private final File archivo = new File("productos.xlsx");
+    private final IndiceSimple indiceSimple = new IndiceSimple();
     private long ultimoId = 0L;
 
     public ProductoRepository() {
@@ -31,6 +32,7 @@ public class ProductoRepository implements IProductoRepository {
 
         productos.put(producto.getId(), producto);
         guardarEnArchivo();
+        actualizarIndices();
         return producto;
     }
 
@@ -49,6 +51,7 @@ public class ProductoRepository implements IProductoRepository {
         if (productos.containsKey(id)) {
             productos.remove(id);
             guardarEnArchivo();
+            actualizarIndices();
 
             if (productos.isEmpty()) {
                 ultimoId = 0L;
@@ -59,17 +62,31 @@ public class ProductoRepository implements IProductoRepository {
     }
 
     @Override
-    public Optional<Producto> obtenerPorNombre(String nombre) {
-        return productos.values().stream()
-                .filter(p -> normalizarTexto(p.getNombre()).equals(normalizarTexto(nombre)))
-                .findFirst();
+    public List<Producto> obtenerPorNombre(String nombre) {
+        String nombreNormalizado = normalizarTexto(nombre);
+        List<Long> ids = indiceSimple.buscarPorNombre(nombreNormalizado);
+        List<Producto> resultado = new ArrayList<>();
+        for (Long id : ids) {
+            Producto producto = productos.get(id);
+            if (producto != null) {
+                resultado.add(producto);
+            }
+        }
+        return resultado;
     }
 
     @Override
     public List<Producto> obtenerPorSeccion(String seccion) {
-        return productos.values().stream()
-                .filter(p -> normalizarTexto(p.getSeccion()).equals(normalizarTexto(seccion)))
-                .toList();
+        String seccionNormalizada = normalizarTexto(seccion);
+        List<Long> ids = indiceSimple.buscarPorSeccion(seccionNormalizada);
+        List<Producto> resultado = new ArrayList<>();
+        for (Long id : ids) {
+            Producto producto = productos.get(id);
+            if (producto != null) {
+                resultado.add(producto);
+            }
+        }
+        return resultado;
     }
 
     private String normalizarTexto(String texto) {
@@ -130,5 +147,20 @@ public class ProductoRepository implements IProductoRepository {
                 throw new RuntimeException("Error leyendo productos desde archivo Excel", e);
             }
         }
+        actualizarIndices();
+    }
+    
+    private void actualizarIndices() {
+        Map<Long, String> nombres = new HashMap<>();
+        Map<Long, String> secciones = new HashMap<>();
+        
+        for (Map.Entry<Long, Producto> entry : productos.entrySet()) {
+            Producto p = entry.getValue();
+            nombres.put(entry.getKey(), normalizarTexto(p.getNombre()));
+            secciones.put(entry.getKey(), normalizarTexto(p.getSeccion()));
+        }
+        
+        indiceSimple.crearIndiceNombre(nombres);
+        indiceSimple.crearIndiceSeccion(secciones);
     }
 }

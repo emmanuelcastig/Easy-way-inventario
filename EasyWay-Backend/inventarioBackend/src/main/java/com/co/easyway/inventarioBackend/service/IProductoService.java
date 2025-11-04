@@ -10,7 +10,7 @@ public interface IProductoService {
     List<Producto> obtenerProductos();
     Producto obtenerProductoPorId(Long id);
     void eliminarProducto(Long id);
-    Optional<Producto> obtenerPorNombre(String nombre);
+    List<Producto> obtenerPorNombre(String nombre);
     List<Producto> obtenerPorSeccion(String seccion);
 
 }

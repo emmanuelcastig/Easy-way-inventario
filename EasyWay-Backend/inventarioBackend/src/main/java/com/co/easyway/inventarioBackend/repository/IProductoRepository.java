@@ -10,7 +10,6 @@ public interface IProductoRepository {
     List<Producto> obtenerTodos();
     Optional<Producto> obtenerPorId(Long id);
     void eliminarPorId(Long id);
-    Optional<Producto> obtenerPorNombre(String nombre);
+    List<Producto> obtenerPorNombre(String nombre);
     List<Producto> obtenerPorSeccion(String seccion);
-
 }

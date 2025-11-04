@@ -54,13 +54,12 @@ public class ProductoController {
     }
 
     @GetMapping("/producto/nombre")
-    public ResponseEntity<Producto> buscarPorNombre(@RequestParam String nombre) {
+    public ResponseEntity<List<Producto>> buscarPorNombre(@RequestParam String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        return productoService.obtenerPorNombre(nombre)
-                .map(producto -> ResponseEntity.ok(producto))
-                .orElse(ResponseEntity.notFound().build());
+        List<Producto> productos = productoService.obtenerPorNombre(nombre);
+        return productos.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(productos);
     }
 
     @GetMapping("/producto/seccion")

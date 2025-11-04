@@ -1,0 +1,10 @@
+camiseta nike|10
+granadilla|9
+manzana|8
+martillo|3
+monitor|1
+play station 5|2
+set vasos x 6 und|6
+silla rimax|7
+televisor lg|4
+televisor samsung|5
