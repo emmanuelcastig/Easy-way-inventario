@@ -1,5 +1,0 @@
-alimentos|8,9
-electronica|1,2,4,5
-ferreteria|3
-hogar|6,7
-ropa|10

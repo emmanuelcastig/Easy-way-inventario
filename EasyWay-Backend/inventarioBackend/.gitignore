@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+productos.xlsx
+indice_nombre.txt
+indice_seccion.txt
