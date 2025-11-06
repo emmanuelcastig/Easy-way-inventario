@@ -108,19 +108,25 @@ export class AppComponent implements OnInit {
 
     const nombreTrim = (nombre || '').trim();
     if (!nombreTrim) {
-      this.mensajeNoEncontrado = 'Ingresa un nombre válido.';
+      this.mensajeNoEncontrado = 'Ingresa el nombre completo del producto.';
       return;
     }
 
     this.productoService.obtenerProductoPorNombre(nombreTrim).subscribe({
-      next: (producto) => {
-        this.productoEncontrado = producto;
-        this.lastBusquedaNombre = nombreTrim;
+    next: (productos) => {
+      this.productosFiltrados = productos || [];
 
-        this.busquedaNombre = '';
-        this.busquedaId = null;
-        this.busquedaSeccion = '';
-      },
+      if (this.productosFiltrados.length === 0) {
+        this.mensajeNoEncontrado = `No se encontraron productos con el nombre "${nombreTrim}".`;
+      } else {
+        this.lastBusquedaNombre = nombreTrim;
+      }
+
+      // limpiar campos
+      this.busquedaNombre = '';
+      this.busquedaSeccion = '';
+      this.busquedaId = null;
+    },
       error: (err) => {
         if (err?.status === 404) {
           this.mensajeNoEncontrado = `No existe producto con nombre "${nombreTrim}".`;
