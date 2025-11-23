@@ -33,5 +33,6 @@ build/
 .vscode/
 
 productos.xlsx
-indice_nombre.txt
-indice_seccion.txt
+indice_nombres_bplus.txt
+indice_secciones_bplus.txt
+

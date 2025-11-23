@@ -15,7 +15,7 @@ public class ProductoRepository implements IProductoRepository {
 
     private final Map<Long, Producto> productos = new HashMap<>();
     private final File archivo = new File("productos.xlsx");
-    private final IndiceSimple indiceSimple = new IndiceSimple();
+    private final IndiceBPlus indiceBPlus = new IndiceBPlus();
     private long ultimoId = 0L;
 
     public ProductoRepository() {
@@ -64,7 +64,7 @@ public class ProductoRepository implements IProductoRepository {
     @Override
     public List<Producto> obtenerPorNombre(String nombre) {
         String nombreNormalizado = normalizarTexto(nombre);
-        List<Long> ids = indiceSimple.buscarPorNombre(nombreNormalizado);
+        List<Long> ids = indiceBPlus.buscarPorNombre(nombreNormalizado);
         List<Producto> resultado = new ArrayList<>();
         for (Long id : ids) {
             Producto producto = productos.get(id);
@@ -78,7 +78,7 @@ public class ProductoRepository implements IProductoRepository {
     @Override
     public List<Producto> obtenerPorSeccion(String seccion) {
         String seccionNormalizada = normalizarTexto(seccion);
-        List<Long> ids = indiceSimple.buscarPorSeccion(seccionNormalizada);
+        List<Long> ids = indiceBPlus.buscarPorSeccion(seccionNormalizada);
         List<Producto> resultado = new ArrayList<>();
         for (Long id : ids) {
             Producto producto = productos.get(id);
@@ -151,16 +151,13 @@ public class ProductoRepository implements IProductoRepository {
     }
     
     private void actualizarIndices() {
-        Map<Long, String> nombres = new HashMap<>();
-        Map<Long, String> secciones = new HashMap<>();
+        indiceBPlus.limpiar();
         
         for (Map.Entry<Long, Producto> entry : productos.entrySet()) {
             Producto p = entry.getValue();
-            nombres.put(entry.getKey(), normalizarTexto(p.getNombre()));
-            secciones.put(entry.getKey(), normalizarTexto(p.getSeccion()));
+            String nombreNormalizado = normalizarTexto(p.getNombre());
+            String seccionNormalizada = normalizarTexto(p.getSeccion());
+            indiceBPlus.agregarProducto(entry.getKey(), nombreNormalizado, seccionNormalizada);
         }
-        
-        indiceSimple.crearIndiceNombre(nombres);
-        indiceSimple.crearIndiceSeccion(secciones);
     }
 }
